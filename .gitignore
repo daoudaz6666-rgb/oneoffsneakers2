@@ -1,0 +1,8 @@
+﻿# Photos écartées (doublons, filigranes d'autres boutiques)
+photos/_non-utilisees/
+
+# Fichiers système
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp

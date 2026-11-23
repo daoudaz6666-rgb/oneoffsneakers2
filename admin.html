@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Espace propriétaire — ONE OFF SNEAKERS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" type="image/png" href="img/logo-oneoff.png">
+</head>
+<body>
+  <!-- Connexion -->
+  <section class="login" id="login">
+    <div class="login-bg"><span></span><span></span></div>
+    <form class="login-card" id="loginForm" autocomplete="off">
+      <div class="logo"><img class="logo-img" src="img/logo-oneoff.png" alt=""><span class="logo-text"><b>ONE OFF</b><small>SNEAKERS</small></span></div>
+      <h1>Espace propriétaire</h1>
+      <p class="muted">Connectez-vous pour gérer vos chaussures, prix, photos et marques.</p>
+      <label class="field"><span>Mot de passe</span><input type="password" id="pwd" required autofocus></label>
+      <button class="btn btn-primary btn-block" type="submit">Se connecter</button>
+      <p class="hint" id="loginHint"></p>
+      <a href="index.html" class="back">← Retour à la boutique</a>
+    </form>
+  </section>
+
+  <!-- Application admin -->
+  <div class="admin" id="admin" hidden>
+    <aside class="side">
+      <div class="logo"><img class="logo-img" src="img/logo-oneoff.png" alt=""><span class="logo-text"><b>ONE OFF</b><small>ADMIN</small></span></div>
+      <nav id="sideNav">
+        <button data-tab="dashboard" class="active"><i>◧</i>Tableau de bord</button>
+        <button data-tab="products"><i>👟</i>Chaussures</button>
+        <button data-tab="brands"><i>★</i>Marques</button>
+        <button data-tab="settings"><i>⚙</i>Paramètres</button>
+        <button data-tab="data"><i>⇅</i>Sauvegarde & publication</button>
+      </nav>
+      <div class="side-foot">
+        <a href="index.html" target="_blank" rel="noopener" class="btn btn-ghost btn-block">Voir la boutique ↗</a>
+        <button class="link-btn" id="logout">Déconnexion</button>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+        <h1 id="tabTitle">Tableau de bord</h1>
+        <div class="sync" id="sync"><span></span>Synchronisé avec la boutique</div>
+      </header>
+      <div class="view" id="view"></div>
+    </main>
+  </div>
+
+  <!-- Éditeur (panneau latéral) -->
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="panel" id="panel" aria-hidden="true"></aside>
+
+  <!-- Confirmation -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <h3 id="modalTitle"></h3>
+      <p id="modalText" class="muted"></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalNo">Annuler</button>
+        <button class="btn btn-danger" id="modalYes">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+  <script src="js/shoe-art.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
