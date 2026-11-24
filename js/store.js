@@ -62,7 +62,7 @@
     c.settings = Object.assign({}, def.settings, c.settings || {});
     c.brands = Array.isArray(c.brands) ? c.brands : [];
     c.products = (Array.isArray(c.products) ? c.products : []).map(p => Object.assign({
-      gender: [], sizes: [], colors: [], images: {}, art: {}, stock: 0,
+      gender: [], sizes: [], colors: [], images: {}, spin: [], art: {}, stock: 0,
       price: 0, oldPrice: 0, description: '', active: true, featured: false, isNew: false
     }, p));
     return c;

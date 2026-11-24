@@ -22,6 +22,14 @@
     snapchat: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.4c3 0 5.1 2.3 5.1 5.3v2.3l1.3-.4c.6-.2 1 .5.6.9-.4.5-1.2.8-1.8 1 .6 1.6 1.9 3 3.5 3.5.4.1.4.6 0 .8-.6.3-1.4.5-2.1.6l-.3 1.2c-.9-.1-1.8 0-2.6.5-.9.6-1.6 1.1-2.7 1.1s-1.8-.5-2.7-1.1c-.8-.5-1.7-.6-2.6-.5l-.3-1.2c-.7-.1-1.5-.3-2.1-.6-.4-.2-.4-.7 0-.8 1.6-.5 2.9-1.9 3.5-3.5-.6-.2-1.4-.5-1.8-1-.4-.4 0-1.1.6-.9l1.3.4V7.7c0-3 2.1-5.3 5.1-5.3z"/></svg>',
     instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>',
     facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.6V6.9c0-.7.3-1 1-1h2.3V2.3h-3.1c-3 0-4.2 1.8-4.2 4.4v1.9H7.6V12H10v9.7h4V12h3l.5-3.4H14z"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 20s-7-4.4-9.2-8.6C1.3 8.4 3 5 6.4 5c2 0 3.3 1.1 4.1 2.4h3C14.3 6.1 15.6 5 17.6 5 21 5 22.7 8.4 21.2 11.4 19 15.6 12 20 12 20z"/></svg>',
+    check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 4 6v6c0 4.4 3.4 8 8 9 4.6-1 8-4.6 8-9V6l-8-3z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m8.5 12 2.5 2.5 4.5-5"/></svg>',
+    truck: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M2 6h11v10H2zM13 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="18" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/></svg>',
+    swap: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 8h13l-3-3M20 16H7l3 3"/></svg>',
+    cash: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>',
+    spin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21 12c0 2.2-4 4-9 4s-9-1.8-9-4 4-4 9-4c2 0 3.8.3 5.3.8"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m15 6 2.6 2.8L14.8 11"/></svg>',
+    drag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 9 4 12l4 3M16 9l4 3-4 3M4 12h16"/></svg>',
     phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 2.5c.5 0 .9.3 1.1.8l1.4 3.3c.2.5.1 1-.3 1.4L7.3 9.5a12 12 0 0 0 7.2 7.2l1.5-1.5c.4-.4.9-.5 1.4-.3l3.3 1.4c.5.2.8.6.8 1.1V21c0 .7-.6 1.3-1.3 1.3C10.6 22.3 1.7 13.4 1.7 3.8c0-.7.6-1.3 1.3-1.3h3.6z"/></svg>'
   };
   const VIEWS = ShoeArt.VIEWS;
@@ -42,10 +50,125 @@
   const altView = p => { const vs = viewsOf(p), m = mainView(p); return (vs.find(v => v.id === 'face' && v.id !== m) || vs.find(v => v.id !== m) || vs[0]).id; };
   const mainImg = p => img(p, mainView(p));
   const isPhoto = p => viewsOf(p).some(v => Store.hasPhoto(p, v.id));
+  const has360 = p => Array.isArray(p.spin) && p.spin.length >= 6;
   const brandLogo = (b, cls = '') => b.logo
     ? `<span class="blogo ${cls}" style="--lb:${esc(b.logoBg || '#ffffff')}"><img src="${esc(b.logo)}" alt="${esc(b.name)}" loading="lazy"></span>`
     : `<span class="blogo blogo-text ${cls}" style="--lb:${esc(b.color || '#333')}">${esc(b.name)}</span>`;
+  const fullName = p => { const b = brandName(p); return p.model.toLowerCase().startsWith(b.toLowerCase()) ? p.model : (b + ' ' + p.model).trim(); };
   const discount = p => p.oldPrice > p.price ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+  /* ---------- Favoris (enregistrés dans ce navigateur) ---------- */
+  const Fav = {
+    key: 'oos-fav',
+    ids: [],
+    load() { try { this.ids = JSON.parse(localStorage.getItem(this.key)) || []; } catch (e) { this.ids = []; } },
+    save() { try { localStorage.setItem(this.key, JSON.stringify(this.ids)); } catch (e) { /* ignore */ } },
+    has(id) { return this.ids.includes(id); },
+    toggle(id) { if (this.has(id)) this.ids = this.ids.filter(x => x !== id); else this.ids.unshift(id); this.save(); return this.has(id); },
+    list() { return this.ids.map(id => productById(id)).filter(p => p && p.active !== false); }
+  };
+  const favBtn = (p, cls = '') => `<button class="fav-btn ${cls} ${Fav.has(p.id) ? 'on' : ''}" data-fav="${p.id}" aria-pressed="${Fav.has(p.id)}" aria-label="Favori : ${esc(fullName(p))}">${ICONS.heart}</button>`;
+
+  /* ---------- Familles de couleurs ---------- */
+  const COLOR_FAMILIES = [
+    ['noir', 'Noires', '#151515', /noir|black/],
+    ['blanc', 'Blanches', '#f4f4f4', /blanc|white|crème|creme|écru|ivoire/],
+    ['gris', 'Grises', '#9a9a9a', /gris|argent|silver/],
+    ['bleu', 'Bleues', '#2b59c3', /bleu|marine|ciel|denim|royal/],
+    ['vert', 'Vertes', '#2e8b57', /vert|kaki|olive|menthe|lime|volt|canard/],
+    ['rouge', 'Rouges', '#c8102e', /rouge|bordeaux/],
+    ['rose', 'Roses', '#e88aa8', /rose/],
+    ['marron', 'Marron', '#7a4b2a', /marron|camel|chocolat|taupe|blé|moutarde/],
+    ['beige', 'Beiges', '#d9c7a5', /beige|sable|lavande/],
+    ['multi', 'Multicolores', 'conic-gradient(#e33,#fd0,#3c6,#39f,#c3f,#e33)', /multi|variés|plusieurs|orange|jaune|violet/]
+  ];
+  const colorKeys = p => {
+    const txt = `${(p.colors || []).map(c => c.name).join(' ')} ${p.model}`.toLowerCase();
+    return COLOR_FAMILIES.filter(c => c[3].test(txt)).map(c => c[0]);
+  };
+  const colorFam = k => COLOR_FAMILIES.find(c => c[0] === k);
+
+  /* ---------- Séries (modèle sans le coloris) ---------- */
+  function seriesOf(list) {
+    const m = new Map();
+    list.forEach(p => {
+      const name = family(p), key = p.brandId + '|' + name;
+      if (!m.has(key)) m.set(key, { name, brand: p.brandId, items: [] });
+      m.get(key).items.push(p);
+    });
+    return [...m.values()];
+  }
+  const serieLink = s => `#/marque/${s.brand}?serie=${encodeURIComponent(s.name)}`;
+  const thumbRow = (list, cls = '') => `<div class="thumb-row ${cls}">${list.map(s => `
+    <a class="subcat" href="${serieLink(s)}"><span class="subcat-img"><img src="${mainImg(s.items[0])}" alt="" loading="lazy"></span><span class="subcat-name">${esc(s.name)}</span></a>`).join('')}</div>`;
+
+  /* ---------- Carrousel de produits ---------- */
+  let carSeq = 0;
+  function carousel(list, opts = {}) {
+    const id = 'car' + (++carSeq);
+    return `<div class="car ${opts.cls || ''}">
+      <button class="car-arrow prev" data-car="${id}" data-dir="-1" aria-label="Précédent">‹</button>
+      <div class="car-track" id="${id}">${list.map((p, i) => opts.render ? opts.render(p, i) : card(p, i)).join('')}</div>
+      <button class="car-arrow next" data-car="${id}" data-dir="1" aria-label="Suivant">›</button>
+    </div>`;
+  }
+  function mountCarousels(root = document) {
+    $$('.car-track', root).forEach(t => { if (!t._drag) { t._drag = true; dragScroll(t); } });
+  }
+
+  /* ---------- Comptes à rebours ---------- */
+  function countdownTarget(spec) {
+    const now = new Date();
+    if (spec === 'midnight') { const d = new Date(now); d.setHours(24, 0, 0, 0); return d; }
+    if (spec === 'weekly' || !spec) { const d = new Date(now); d.setHours(24, 0, 0, 0); while (d.getDay() !== 1) d.setDate(d.getDate() + 1); return d; }
+    const d = new Date(String(spec).replace(' ', 'T'));
+    return isNaN(d) ? null : d;
+  }
+  function fmtCountdown(ms) {
+    if (ms <= 0) return 'terminé';
+    const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
+    const pad = n => String(n).padStart(2, '0');
+    return (d ? `${d} j ` : '') + `${pad(h)} h ${pad(m)} min ${pad(sec)} s`;
+  }
+  function tickCountdowns() {
+    $$('[data-cdbox]').forEach(el => {
+      const t = countdownTarget(el.dataset.cdbox); if (!t) return;
+      const ms = Math.max(0, t - Date.now()), s = Math.floor(ms / 1000);
+      const parts = [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(n => String(n).padStart(2, '0'));
+      el.innerHTML = parts.map(x => `<i>${x[0]}</i><i>${x[1]}</i>`).join('<em>:</em>');
+    });
+    $$('[data-countdown]').forEach(el => {
+      const t = countdownTarget(el.dataset.countdown);
+      if (t) el.textContent = fmtCountdown(t - Date.now());
+    });
+  }
+
+  /* ---------- Questions fréquentes (textes propres à la boutique) ---------- */
+  const FAQ = [
+    ['Comment passer commande ?', 'Ajoutez vos paires au panier puis touchez « Commander via WhatsApp » : votre commande arrive directement chez nous avec les pointures choisies. Vous pouvez aussi nous écrire depuis n\'importe quelle fiche produit.'],
+    ['Pourquoi certains prix sont « sur demande » ?', 'Les prix peuvent varier selon la pointure et l\'arrivage. Écrivez-nous sur WhatsApp : on vous répond rapidement avec le prix exact et la disponibilité.'],
+    ['Quels sont les délais de livraison ?', 'En ville, comptez en général 24 à 72 h après confirmation de la commande. Le délai exact vous est confirmé au moment de la commande.'],
+    ['Comment se passe le paiement ?', 'Vous payez à la livraison, au moment où vous recevez votre paire. Aucun paiement en ligne n\'est demandé sur le site.'],
+    ['Et si la pointure ne me va pas ?', 'Pas de souci : l\'échange de pointure est possible sous 7 jours, tant que la paire n\'a pas été portée et qu\'elle est rendue dans son état d\'origine.'],
+    ['Comment choisir ma pointure ?', 'Consultez notre guide des tailles. En cas d\'hésitation entre deux pointures, prenez la plus grande ou demandez-nous conseil sur WhatsApp.'],
+    ['Les paires sont-elles vérifiées ?', 'Oui : chaque paire est contrôlée par notre équipe avant l\'envoi (état, coutures, semelles, boîte).']
+  ];
+  const faqHTML = (list, open = 0) => `<div class="faq">${list.map((q, i) => `<details${i < open ? ' open' : ''}><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('')}</div>`;
+
+  /* Guide des tailles (correspondances indicatives) */
+  const SIZE_TABLE = [
+    [36, '22,5', '3,5', '—', '5,5'], [37, '23,5', '4', '—', '6,5'], [38, '24', '5', '—', '7,5'], [39, '25', '6', '6,5', '8'],
+    [40, '25,5', '6,5', '7', '9'], [41, '26,5', '7', '8', '9,5'], [42, '27', '8', '8,5', '10'], [43, '27,5', '9', '9,5', '—'],
+    [44, '28,5', '9,5', '10', '—'], [45, '29', '10,5', '11', '—'], [46, '30', '11', '12', '—']
+  ];
+
+  /* Garanties de la boutique */
+  const TRUST = [
+    ['check', 'Paires vérifiées', 'Contrôle avant chaque envoi'],
+    ['truck', 'Livraison 24–72 h', 'Rapide, en ville'],
+    ['swap', 'Échange sous 7 jours', 'Si la pointure ne va pas'],
+    ['cash', 'Paiement à la livraison', 'Vous payez à réception']
+  ];
+
 
   /* =========================================================
      PANIER
@@ -71,6 +194,7 @@
     const cc = $('#cartCount');
     cc.textContent = count;
     cc.classList.toggle('show', count > 0);
+    const dt = $('#dtCart'); if (dt) dt.textContent = count || '';
     const lines = Cart.lines();
     $('#cartItems').innerHTML = lines.length ? lines.map((l, i) => `
       <div class="cart-line" style="--d:${i * 50}ms">
@@ -97,7 +221,24 @@
       <button class="btn btn-ghost btn-block" data-close-cart>Continuer mes achats</button>` : '';
   }
 
-  function openCart() { document.body.classList.add('cart-open'); }
+  function renderFav() {
+    const list = Fav.list();
+    const fc = $('#favCount'); fc.textContent = list.length; fc.classList.toggle('show', list.length > 0);
+    $('#dtFav').textContent = list.length || '';
+    $('#favItems').innerHTML = list.length ? list.map((p, i) => `
+      <div class="cart-line" style="--d:${i * 50}ms">
+        <a href="#/produit/${p.id}" class="cart-thumb" data-close-cart><img src="${mainImg(p)}" alt=""></a>
+        <div class="cart-info"><small>${esc(brandName(p))}</small><a href="#/produit/${p.id}" data-close-cart><b>${esc(p.model)}</b></a><span>${esc(TYPES[p.type] || '')}</span></div>
+        <div class="cart-right"><b>${price(p.price)}</b><button class="link-btn" data-fav="${p.id}">Retirer</button></div>
+      </div>`).join('') : `
+      <div class="cart-empty"><p>Aucun favori pour le moment.</p><p class="muted small">Touchez le cœur sur une chaussure pour la retrouver ici.</p><a href="#/catalogue" class="btn btn-primary" data-close-cart>Parcourir les sneakers</a></div>`;
+    $$('.fav-btn[data-fav]').forEach(b => { const on = Fav.has(b.dataset.fav); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  }
+  function setDrawerTab(tab) {
+    $$('[data-dtab]').forEach(b => b.classList.toggle('on', b.dataset.dtab === tab));
+    $('#cartItems').hidden = tab !== 'cart'; $('#cartFoot').hidden = tab !== 'cart'; $('#favItems').hidden = tab !== 'fav';
+  }
+  function openCart(tab = 'cart') { setDrawerTab(tab); document.body.classList.add('cart-open'); }
   function closeCart() { document.body.classList.remove('cart-open'); }
 
   function orderMessage(lines) {
@@ -219,21 +360,19 @@
     const d = discount(p);
     const sizes = (p.sizes || []).slice().sort((a, b) => a - b);
     return `
-    <article class="card tilt" data-reveal style="--d:${(i % 8) * 70}ms" data-id="${p.id}">
+    <article class="card" data-reveal style="--d:${(i % 8) * 70}ms" data-id="${p.id}">
       <div class="card-inner">
-        <a href="#/produit/${p.id}" class="card-media" aria-label="${esc(brandName(p) + ' ' + p.model)}">
-          <span class="badges">${p.isNew ? '<b class="badge new">Nouveau</b>' : ''}${d ? `<b class="badge sale">-${d}%</b>` : ''}${p.stock <= 0 ? '<b class="badge out">Épuisé</b>' : ''}</span>
-          <img class="img-main" src="${mainImg(p)}" alt="${esc(brandName(p) + ' ' + p.model)}" loading="lazy">
+        <a href="#/produit/${p.id}" class="card-media" aria-label="${esc(fullName(p))}">
+          <span class="badges">${has360(p) ? '<b class="badge b360">360°</b>' : ''}${p.isNew ? '<b class="badge new">Nouveau</b>' : ''}${d ? `<b class="badge sale">-${d}%</b>` : ''}${p.stock <= 0 ? '<b class="badge out">Épuisé</b>' : ''}</span>
+          <span class="ship-tag">${ICONS.bolt}24–72H</span>
+          <img class="img-main" src="${mainImg(p)}" alt="${esc(fullName(p))}" loading="lazy">
           ${mainView(p) !== altView(p) ? `<img class="img-alt" src="${img(p, altView(p))}" alt="" loading="lazy">` : ''}
-          <span class="card-shine"></span>
-          <span class="card-views">${isPhoto(p) ? `${viewsOf(p).length} photo${viewsOf(p).length > 1 ? 's' : ''}` : `${VIEWS.length} vues`}</span>
         </a>
+        ${favBtn(p)}
         <div class="card-body">
-          <span class="card-brand">${esc(brandName(p))}</span>
-          <a href="#/produit/${p.id}" class="card-title">${esc(p.model)}</a>
-          <span class="card-meta">${esc(TYPES[p.type] || '')} · ${p.gender.map(g => GENDERS[g]).join(' / ')}</span>
+          <a href="#/produit/${p.id}" class="card-title">${esc(fullName(p))}</a>
           <div class="card-foot">
-            <span class="price">${price(p.price)}${p.oldPrice > p.price ? ` <s>${price(p.oldPrice)}</s>` : ''}</span>
+            <span class="price">${p.price > 0 ? '<small>À partir de</small> ' : ''}${price(p.price)}${p.oldPrice > p.price ? ` <s>${price(p.oldPrice)}</s>` : ''}</span>
             ${p.stock > 0 && sizes.length ? `<button class="quick-add" data-quick="${p.id}" aria-label="Ajout rapide">+</button>` : ''}
           </div>
         </div>
@@ -261,210 +400,395 @@
      PAGES
      ========================================================= */
   function viewHome() {
-    const all = products();
-    const featured = all.filter(p => p.featured);
-    const fresh = all.filter(p => p.isNew).concat(all.filter(p => !p.isNew)).slice(0, 10);
-    const wall = [...new Set([...featured, ...all.filter(p => p.isNew), ...all])].filter(p => isPhoto(p)).slice(0, 21);
-    const wallCols = [0, 1, 2].map(c => wall.filter((_, i) => i % 3 === c));
-    const s = C.settings;
-    const typeKeys = typesUsed();
-    const brandsWithCount = C.brands.map(b => ({ ...b, n: all.filter(p => p.brandId === b.id).length })).filter(b => b.n);
+    const all = products(), s = C.settings;
+    const ph = all.filter(isPhoto);
+    const byId = id => { const p = productById(id); return p && p.active !== false && isPhoto(p) ? p : null; };
+    const featured = ph.filter(p => p.featured);
+    const fresh = [...ph.filter(p => p.isNew), ...ph.filter(p => !p.isNew)];
+    const ofBrand = id => ph.filter(p => p.brandId === id);
+    const series = seriesOf(ph.filter(p => p.brandId !== 'autres')).sort((a, b) => b.items.length - a.items.length);
+    const multi = series.filter(x => x.items.length >= 2);
+
+    /* Diaporama d'accueil */
+    const SL = [
+      ['maison-mihara-yasuhiro-toile-rouge', 'Maison Mihara Yasuhiro', 'La toile vintage et la semelle « fondue » façonnée à la main : la sneaker qui ne ressemble à aucune autre.', '#/marque/maison-mihara-yasuhiro'],
+      ['dior-b30-noir-blanc', 'Dior B30', 'Le runner technique de la maison parisienne, en six coloris à découvrir.', '#/marque/dior?serie=B30'],
+      ['hermes-oran-rouge', 'Sandales Hermès', 'Oran, Chypre, Izmir : le H découpé dans un cuir d\'exception.', '#/marque/hermes'],
+      ['timberland-6-inch-x-supreme-noir', 'Bottes 6-Inch', 'Le classique robuste en nubuck, revisité en éditions spéciales.', '#/catalogue?type=bottes'],
+      ['loro-piana-summer-charms-walk-beige', 'Loro Piana Summer Walk', 'Le mocassin en daim d\'une légèreté absolue, pour toutes les saisons.', '#/marque/loro-piana']
+    ].map(x => ({ p: byId(x[0]), title: x[1], text: x[2], href: x[3] })).filter(x => x.p);
+    if (!SL.length && featured[0]) SL.push({ p: featured[0], title: brandName(featured[0]), text: featured[0].model, href: '#/produit/' + featured[0].id });
+
+    /* Pastilles de collections */
+    const pills = list => `<div class="pills">${list.map(x => `<a class="pill" href="${serieLink(x)}"><img src="${mainImg(x.items[0])}" alt="" loading="lazy"><span>${esc(x.name.toLowerCase().startsWith(((brandById(x.brand) || {}).name || '').toLowerCase()) ? x.name : ((brandById(x.brand) || {}).name || '') + ' ' + x.name)}</span></a>`).join('')}</div>`;
+
+    /* Carrousel de cartes (flèches dans l'en-tête de section) */
+    let seq = 0;
+    const track = (list, cls = '') => { const id = 'tr' + (++seq) + Math.random().toString(36).slice(2, 6); return [id, `<div class="ctrack ${cls}" id="${id}">${list.map(card).join('')}</div>`]; };
+    const ctrl = (id, more) => `<div class="hs-ctrl"><button class="sq-arrow" data-car="${id}" data-dir="-1" aria-label="Précédent">‹</button><button class="sq-arrow" data-car="${id}" data-dir="1" aria-label="Suivant">›</button>${more ? `<a class="ul-link" href="${more}">Voir plus</a>` : ''}</div>`;
+    const brandCar = bid => {
+      const b = brandById(bid), list = ofBrand(bid);
+      if (!b || !list.length) return '';
+      const [id, tr] = track(list.slice(0, 12));
+      return `<section class="section hs"><header class="hs-head"><h2 class="hs-title">${esc(b.name)}</h2>${ctrl(id, '#/marque/' + b.id)}</header>${tr}</section>`;
+    };
+
+    /* Onglets Nouveautés / Sélection */
+    const [tNew, trNew] = track(fresh.slice(0, 12));
+    const [tSel, trSel] = track((featured.length ? featured : ph).slice(0, 12));
+
+    /* Coup de cœur du jour */
+    const pool = featured.length ? featured : ph;
+    const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+    const deals = pool.length ? [...pool.slice(day % pool.length), ...pool.slice(0, day % pool.length)].slice(0, 10) : [];
+    const deal = deals[0];
+    const N = deals.length;
+    const today = new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    const sizesTxt = p => { const z = (p.sizes || []).slice().sort((a, b) => a - b); return z.length ? `${z[0]}–${z[z.length - 1]}` : '—'; };
+
+    /* Sandales, bottes */
+    const sandals = ph.filter(p => p.type === 'sandale');
+    const boots = ph.filter(p => p.type === 'bottes');
+    const bootHero = byId('timberland-6-inch-damier') || boots[0];
 
     const html = `
-    <section class="hero">
-      <div class="hero-bg"><span class="blob b1"></span><span class="blob b2"></span><div class="hero-grid"></div></div>
-      <div class="hero-text">
-        <p class="eyebrow"><span class="pulse"></span>Nouvelle collection ${new Date().getFullYear()}</p>
-        <h1 class="hero-title" id="heroTitle">${esc(s.heroTitle)}</h1>
-        <p class="hero-sub">${esc(s.heroSubtitle)}</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary magnetic" href="#/catalogue">Découvrir la collection</a>
-          <a class="btn btn-ghost magnetic" href="#/marques">Nos marques</a>
-        </div>
-        <div class="hero-stats">
-          <div><b data-count="${all.length}">0</b><span>Modèles</span></div>
-          <div><b data-count="${brandsWithCount.length}">0</b><span>Marques</span></div>
-          <div><b data-count="${typeKeys.length}">0</b><span>Styles</span></div>
-        </div>
-      </div>
-      ${wall.length ? `
-      <div class="hero-visual hero-wall" id="heroVisual" aria-label="Nos chaussures">
-        ${wallCols.map((col, ci) => `<div class="hw-col ${ci % 2 ? 'down' : 'up'}" style="--dur:${42 + ci * 9}s"><div class="hw-track">${[0, 1].map(k => col.map(p => `<a class="hw-item" href="#/produit/${p.id}"${k ? ' tabindex="-1" aria-hidden="true"' : ''}><img src="${mainImg(p)}" alt="${esc(brandName(p) + ' ' + p.model)}" loading="lazy"><span class="hw-cap"><small>${esc(brandName(p))}</small><b>${esc(p.model)}</b></span></a>`).join('')).join('')}</div></div>`).join('')}
-      </div>` : ''}
-      <button class="scroll-hint" id="scrollHint" aria-label="Défiler"><span></span></button>
-    </section>
-
-    <section class="marquee" aria-label="Marques">
-      <div class="marquee-track">${[0, 1].map(() => brandsWithCount.filter(b => b.id !== 'autres').map(b => `<a href="#/marque/${b.id}" class="mq-item" title="${esc(b.name)}">${brandLogo(b, 'mq-logo')}</a>`).join('')).join('')}</div>
-    </section>
-
-    <section class="section" id="types">
-      ${sectionHead('Par style', 'Trouvez votre paire', ['#/catalogue', 'Tout voir'])}
-      <div class="types-grid">
-        ${typeKeys.map((t, i) => {
-          const list = all.filter(p => p.type === t);
-          const rep = list.find(p => p.featured) || list[0];
-          const art = rep ? mainImg(rep) : ShoeArt.uri(t, 'profil', {});
-          return `<a href="#/catalogue?type=${t}" class="type-card tilt" data-reveal style="--d:${i * 80}ms">
-            <span class="type-num">0${i + 1}</span>
-            <img src="${art}" alt="" loading="lazy">
-            <div><h3>${TYPES[t]}</h3><span>${list.length} modèle${list.length > 1 ? 's' : ''}</span></div>
-            <span class="type-arrow">→</span>
-          </a>`;
-        }).join('')}
-      </div>
-    </section>
-
-    <section class="section genders">
-      ${Object.keys(GENDERS).map((g, i) => {
-        const list = all.filter(p => p.gender.includes(g));
-        const only = list.filter(p => p.gender.length === 1 && isPhoto(p));
-        const cover = only.find(p => p.featured) || only[0] || list.find(p => isPhoto(p)) || list[0];
-        return `<a href="#/catalogue?genre=${g}" class="gender-tile g-${g}" data-reveal style="--d:${i * 120}ms">
-          <div class="gender-pics">${cover ? `<img class="g-cover" src="${mainImg(cover)}" alt="" loading="lazy">` : ''}</div>
-          <div class="gender-text"><span class="kicker">${list.length} modèles</span><h3>${GENDERS[g]}</h3><span class="arrow-link">Explorer <span>→</span></span></div>
-        </a>`;
-      }).join('')}
-    </section>
-
-    ${featured.length ? `<section class="section">
-      ${sectionHead('Sélection', 'Les pièces du moment', ['#/catalogue', 'Voir le catalogue'])}
-      <div class="grid">${featured.slice(0, 8).map(card).join('')}</div>
+    ${SL.length ? `<section class="hero-sl" id="heroSl" aria-roledescription="carrousel">
+      ${SL.map((x, i) => `<a class="sl ${i === 0 ? 'on' : ''}" href="${x.href}" aria-hidden="${i !== 0}">
+        <img class="sl-bg" src="${mainImg(x.p)}" alt="" aria-hidden="true" ${i ? 'loading="lazy"' : ''}><img class="sl-main" src="${mainImg(x.p)}" alt="" ${i ? 'loading="lazy"' : ''}>
+        <span class="sl-txt"><b>${esc(x.title)}</b><span>${esc(x.text)}</span><em class="sl-btn">Découvrir</em></span>
+      </a>`).join('')}
+      ${SL.length > 1 ? `<button class="sl-arrow prev" aria-label="Diapositive précédente">‹</button><button class="sl-arrow next" aria-label="Diapositive suivante">›</button>
+      <div class="sl-dots"><button class="sl-pause" aria-label="Pause">❚❚</button>${SL.map((_, i) => `<button class="sl-dot ${i === 0 ? 'on' : ''}" data-sl="${i}" aria-label="Diapositive ${i + 1}"><i></i></button>`).join('')}</div>` : ''}
     </section>` : ''}
 
-    <section class="big-banner" aria-hidden="true">
-      <div class="bb-line" data-speed="1">BASKETS ✦ SANDALES ✦ MOCASSINS ✦ BOTTES ✦ BASKETS ✦ SANDALES ✦ MOCASSINS ✦</div>
-      <div class="bb-line outline" data-speed="-1">HOMME ✦ FEMME ✦ ${esc(s.shopName)} ✦ HOMME ✦ FEMME ✦ ${esc(s.shopName)} ✦</div>
+    <section class="trust-strip" aria-label="Nos garanties">
+      <div class="trust-track">${[0, 1, 2].map(() => TRUST.map(x => `<span>${ICONS[x[0]]}${esc(x[1])}</span>`).join('') + `<span>${ICONS.whatsapp}Commande facile sur WhatsApp</span>`).join('')}</div>
     </section>
 
-    <section class="section">
-      ${sectionHead('Arrivages', 'Nouveautés', ['#/catalogue?tri=recent', 'Toutes les nouveautés'])}
-      <div class="slider" id="newSlider">${fresh.map((p, i) => card(p, i)).join('')}</div>
+    <section class="pills-sec">${pills(series.slice(0, 12))}</section>
+
+    <section class="section hs">
+      <header class="hs-head">
+        <div class="ttabs" role="tablist"><button class="on" data-htab="new" role="tab">Nouveautés</button><button data-htab="sel" role="tab">Sélection</button></div>
+        <div class="hs-ctrl"><button class="sq-arrow" data-tabcar="-1" aria-label="Précédent">‹</button><button class="sq-arrow" data-tabcar="1" aria-label="Suivant">›</button><a class="ul-link" id="hTabMore" href="#/catalogue?tri=recent">Voir plus</a></div>
+      </header>
+      <div data-hpanel="new" data-track="${tNew}">${trNew}</div>
+      <div data-hpanel="sel" data-track="${tSel}" hidden>${trSel}</div>
     </section>
 
-    <section class="section">
-      ${sectionHead('Marques', 'Classées par marque & modèle', ['#/marques', 'Toutes les marques'])}
-      <div class="brand-grid">
-        ${brandsWithCount.map((b, i) => `<a href="#/marque/${b.id}" class="brand-tile" data-reveal style="--d:${i * 50}ms; --bc:${esc(b.color || '#d4af5f')}">
-          ${brandLogo(b, 'tile-logo')}
-          <b>${esc(b.name)}</b><span>${b.n} modèle${b.n > 1 ? 's' : ''}</span>
-        </a>`).join('')}
-      </div>
-    </section>
-
-    ${s.whatsapp || s.tiktok || s.snapchat ? `<section class="section">
-      <div class="contact-band" data-reveal>
-        <div class="contact-poster"><img src="img/affiche-oneoff.jpg" alt="Affiche ${esc(s.shopName)}" loading="lazy"></div>
-        <div class="contact-text">
-          <span class="kicker">Commander</span>
-          <h2>Contactez-nous pour commander maintenant</h2>
-          <p>Une paire vous plaît ? Écrivez-nous, on vous répond rapidement avec le prix, les pointures disponibles et la livraison.</p>
-          <div class="contact-links">
-            ${s.whatsapp ? `<a class="contact-link" href="https://wa.me/${esc(String(s.whatsapp).replace(/[^\d]/g, ''))}" target="_blank" rel="noopener"><span class="ci wa">${ICONS.whatsapp}</span><span><small>WhatsApp</small><b>${esc(s.phone || '+' + s.whatsapp)}</b></span></a>` : ''}
-            ${s.tiktok ? `<a class="contact-link" href="${esc(s.tiktok)}" target="_blank" rel="noopener"><span class="ci tt">${ICONS.tiktok}</span><span><small>TikTok</small><b>@${esc(s.tiktok.split('@').pop().replace(/\/.*$/, ''))}</b></span></a>` : ''}
-            ${s.snapchat ? `<a class="contact-link" href="${esc(s.snapchat)}" target="_blank" rel="noopener"><span class="ci sc">${ICONS.snapchat}</span><span><small>Snapchat</small><b>@${esc(s.snapchat.replace(/\/+$/, '').split('/').pop())}</b></span></a>` : ''}
+    ${deal ? `<section class="section">
+      <div class="deals">
+        <div class="deals-head">
+          <div><h2 class="hs-title">Coup de cœur du jour <span class="date-chip">${esc(today)}</span></h2><p class="deals-sub">Chaque jour, une sélection de paires mise en avant. Elle change à minuit : ne tardez pas !</p></div>
+          <div class="cd"><small>Nouvelle sélection dans</small><div class="cd-boxes" data-cdbox="midnight"></div></div>
+        </div>
+        <div class="deals-body">
+          <div class="deal-card">
+            <a class="dc-img" href="#/produit/${deal.id}"><img src="${mainImg(deal)}" alt="${esc(fullName(deal))}" loading="lazy"></a>
+            <div class="dc-info">
+              <div class="dc-top"><span class="dc-num">N° 01 / ${String(N).padStart(2, '0')}</span>${favBtn(deal, 'dc-fav')}</div>
+              <h3><a href="#/produit/${deal.id}">${esc(fullName(deal))}</a></h3>
+              <p class="dc-label">Choisissez votre pointure</p>
+              <div class="deal-sizes" id="dealSizes">${(deal.sizes || []).slice().sort((a, b) => a - b).map(x => `<button data-dsize="${x}">${x}</button>`).join('')}</div>
+              <div class="dc-price"><small>Prix</small><b>${price(deal.price)}</b>${deal.oldPrice > deal.price ? `<s>${price(deal.oldPrice)}</s>` : ''}</div>
+              <button class="btn btn-primary btn-block" id="dealAdd">Ajouter au panier</button>
+              <button class="ul-link dc-wa" id="dealWa">Votre pointure n'y est pas ? Écrivez-nous</button>
+            </div>
+          </div>
+          <div class="deals-side">
+            <div class="ds-head"><b>Les autres coups de cœur</b><div class="hs-ctrl"><button class="sq-arrow" data-car="dealTrack" data-dir="-1" aria-label="Précédent">‹</button><button class="sq-arrow" data-car="dealTrack" data-dir="1" aria-label="Suivant">›</button></div></div>
+            <div class="ds-track" id="dealTrack">${deals.slice(1).map((p, i) => `<a class="ds-card" href="#/produit/${p.id}">
+              <span class="dc-num">N° ${String(i + 2).padStart(2, '0')} / ${String(N).padStart(2, '0')}</span>
+              <span class="ds-img"><img src="${mainImg(p)}" alt="" loading="lazy"></span>
+              <span class="ds-name">${esc(fullName(p))}</span>
+              <span class="ds-foot"><small>Pointures</small><b>${sizesTxt(p)}</b><em>${price(p.price)}</em></span>
+            </a>`).join('')}</div>
+            <div class="ds-bottom"><div class="ds-progress"><i id="dealProg"></i></div><a class="btn btn-primary" href="#/catalogue">Voir plus de modèles</a></div>
           </div>
         </div>
       </div>
     </section>` : ''}
 
-    <section class="section perks">
-      ${[['🚚', 'Livraison rapide', 'Partout en ville, en 24 à 72 h.'], ['💳', 'Paiement à la livraison', 'Vous payez quand vous recevez.'], ['🔁', 'Échange sous 7 jours', 'La pointure ne va pas ? On échange.'], ['✅', 'Qualité vérifiée', 'Chaque paire est contrôlée.']]
-        .map((x, i) => `<div class="perk" data-reveal style="--d:${i * 90}ms"><span>${x[0]}</span><b>${x[1]}</b><p>${x[2]}</p></div>`).join('')}
+    ${brandCar('dior')}
+
+    <section class="pills-sec">${pills(series.slice(12, 24))}</section>
+
+    ${multi.length ? `<section class="section hs">
+      <header class="hs-head"><h2 class="hs-title">Modèles tendance</h2><a class="ul-link" href="#/catalogue">Tout voir</a></header>
+      <div class="tall-row">${multi.slice(0, 8).map(x => {
+        const pic = x.items[1] || x.items[0];
+        return `<a class="tall" href="${serieLink(x)}"><img src="${mainImg(pic)}" alt="" loading="lazy"><span class="tall-label">${esc(((brandById(x.brand) || {}).name || '') + ' ' + x.name)}</span></a>`;
+      }).join('')}</div>
+    </section>` : ''}
+
+    ${sandals.length ? `<section class="gray-sec">
+      <div class="gray-inner">
+        <header class="hs-head"><h2 class="hs-title">Sandales & claquettes</h2><a class="ul-link" href="#/catalogue?type=sandale">Tout voir</a></header>
+        <div class="mini-grid">${sandals.slice(0, 21).map(p => `<a href="#/produit/${p.id}" class="mini-item" title="${esc(fullName(p))}"><img src="${mainImg(p)}" alt="${esc(fullName(p))}" loading="lazy"></a>`).join('')}</div>
+      </div>
+    </section>` : ''}
+
+    ${bootHero ? `<section class="section">
+      <div class="split">
+        <a class="split-img" href="#/catalogue?type=bottes"><img class="sl-bg" src="${mainImg(bootHero)}" alt="" aria-hidden="true" loading="lazy"><img class="sl-main" src="${mainImg(bootHero)}" alt="" loading="lazy"><b class="split-title">Bottes 6-Inch</b><em class="sl-btn">Découvrir</em></a>
+        <div class="split-prods">${boots.filter(p => p !== bootHero).slice(0, 4).map(p => `<a class="sp" href="#/produit/${p.id}"><span class="sp-img"><img src="${mainImg(p)}" alt="" loading="lazy"></span><span class="sp-name">${esc(fullName(p))}</span><span class="sp-price">${price(p.price)}</span></a>`).join('')}</div>
+      </div>
+    </section>` : ''}
+
+    <section class="pills-sec">${pills(series.slice(24, 36))}</section>
+
+    ${brandCar('nike')}
+    ${brandCar('jordan')}
+    ${brandCar('new-balance')}
+    ${brandCar('asics')}
+    ${brandCar('adidas')}
+    ${brandCar('hermes')}
+
+    <section class="section faq-sec">
+      <div class="faq-wrap">
+        <div><h2 class="hs-title">Questions fréquentes</h2><p class="muted">Une autre question ? Écrivez-nous sur WhatsApp, on vous répond rapidement.</p><a class="btn btn-ghost" href="#/aide/faq">Toutes les questions</a></div>
+        ${faqHTML(FAQ.slice(0, 6))}
+      </div>
     </section>`;
 
     const mount = () => {
-      splitWords($('#heroTitle'));
-      requestAnimationFrame(() => $('.hero').classList.add('ready'));
-      counters();
-      dragScroll($('#newSlider'));
-      $('#scrollHint').addEventListener('click', () => {
-        const t = $('#types');
-        window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 80, behavior: 'smooth' });
-      });
-
-      // Bandeaux qui défilent au scroll
-      const lines = $$('.bb-line');
-      const onScroll = () => {
-        const y = window.scrollY;
-        lines.forEach(l => { l.style.transform = `translateX(${(l.dataset.speed * y * 0.25) % 1200 - 300}px)`; });
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-      disposers.push(() => window.removeEventListener('scroll', onScroll));
+      // Diaporama : défilement automatique, flèches, points, pause
+      const sl = $('#heroSl');
+      if (sl && SL.length > 1) {
+        const slides = $$('.sl', sl), dots = $$('.sl-dot', sl);
+        let cur = 0, paused = false, timer = 0;
+        const go = i => {
+          cur = (i + slides.length) % slides.length;
+          slides.forEach((x, k) => { x.classList.toggle('on', k === cur); x.setAttribute('aria-hidden', k !== cur); });
+          dots.forEach((d, k) => { d.classList.toggle('on', k === cur); d.classList.remove('run'); });
+          if (!paused && !reduced) { void dots[cur].offsetWidth; dots[cur].classList.add('run'); }
+        };
+        const play = () => { clearInterval(timer); if (!paused && !reduced) timer = setInterval(() => go(cur + 1), 6000); };
+        $('.sl-arrow.prev', sl).addEventListener('click', e => { e.preventDefault(); go(cur - 1); play(); });
+        $('.sl-arrow.next', sl).addEventListener('click', e => { e.preventDefault(); go(cur + 1); play(); });
+        dots.forEach(d => d.addEventListener('click', e => { e.preventDefault(); go(+d.dataset.sl); play(); }));
+        $('.sl-pause', sl).addEventListener('click', e => {
+          e.preventDefault(); paused = !paused; e.currentTarget.textContent = paused ? '▶' : '❚❚';
+          e.currentTarget.setAttribute('aria-label', paused ? 'Lecture' : 'Pause'); go(cur); play();
+        });
+        let sx = null;
+        sl.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+        sl.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) { go(cur + (dx < 0 ? 1 : -1)); play(); } sx = null; });
+        go(0); play();
+        disposers.push(() => clearInterval(timer));
+      }
+      // Onglets Nouveautés / Sélection
+      const more = { new: '#/catalogue?tri=recent', sel: '#/catalogue' };
+      $$('[data-htab]').forEach(b => b.addEventListener('click', () => {
+        $$('[data-htab]').forEach(x => x.classList.toggle('on', x === b));
+        $$('[data-hpanel]').forEach(pn => { pn.hidden = pn.dataset.hpanel !== b.dataset.htab; if (!pn.hidden) reveal(pn); });
+        $('#hTabMore').href = more[b.dataset.htab];
+      }));
+      $$('[data-tabcar]').forEach(b => b.addEventListener('click', () => {
+        const pn = $$('[data-hpanel]').find(x => !x.hidden); const tr = pn && document.getElementById(pn.dataset.track);
+        tr && tr.scrollBy({ left: +b.dataset.tabcar * tr.clientWidth * 0.9, behavior: 'smooth' });
+      }));
+      $$('.ctrack, .ds-track, .pills, .tall-row').forEach(t => dragScroll(t));
+      // Barre de progression des coups de cœur
+      const dt = $('#dealTrack'), pg = $('#dealProg');
+      if (dt && pg) {
+        const upd = () => { const w = dt.clientWidth / dt.scrollWidth; pg.style.width = Math.min(100, w * 100) + '%'; pg.style.marginLeft = (dt.scrollLeft / dt.scrollWidth * 100) + '%'; };
+        dt.addEventListener('scroll', upd, { passive: true }); upd();
+      }
+      // Coup de cœur : pointure + panier
+      if (deal) {
+        let dsize = null;
+        $('#dealSizes').addEventListener('click', e => {
+          const b = e.target.closest('[data-dsize]'); if (!b) return;
+          $$('#dealSizes button').forEach(x => x.classList.toggle('on', x === b)); dsize = b.dataset.dsize;
+        });
+        const need = () => { if (!dsize && (deal.sizes || []).length) { const g = $('#dealSizes'); g.classList.remove('shake'); void g.offsetWidth; g.classList.add('shake'); toast('Choisissez d\'abord votre pointure.', 'warn'); return true; } return false; };
+        const col = deal.colors && deal.colors[0] ? deal.colors[0].name : '';
+        $('#dealAdd').addEventListener('click', () => { if (need()) return; Cart.add(deal.id, dsize || 'Unique', col, 1); flyToCart($('.dc-img img')); toast(`${deal.model} (P. ${dsize || 'unique'}) ajouté au panier`); });
+        $('#dealWa').addEventListener('click', () => sendWhatsApp([{ p: deal, size: dsize || 'à préciser', color: col, qty: 1 }]));
+      }
     };
     return [html, mount];
   }
 
-  /* ---------- CATALOGUE ---------- */
-  function viewCatalogue(_, params) {
+  /* ---------- Pages d'aide ---------- */
+  function viewHelp([slug]) {
+    const s = C.settings;
+    const wa = s.whatsapp ? `https://wa.me/${String(s.whatsapp).replace(/[^\d]/g, '')}` : '';
+    const pages = {
+      faq: ['Questions fréquentes', faqHTML(FAQ, 1)],
+      livraison: ['Livraison & retours', `
+        <div class="help-cards">${TRUST.map(x => `<div class="help-card">${ICONS[x[0]]}<b>${esc(x[1])}</b><span>${esc(x[2])}</span></div>`).join('')}</div>
+        <h3>Livraison</h3><p>Après confirmation de votre commande sur WhatsApp, la livraison se fait en général sous 24 à 72 h en ville. Le délai et les frais éventuels vous sont confirmés au moment de la commande.</p>
+        <h3>Paiement</h3><p>Vous payez à la livraison, au moment où vous recevez votre paire.</p>
+        <h3>Échanges</h3><p>La pointure ne convient pas ? L'échange est possible sous 7 jours, si la paire n'a pas été portée et qu'elle est rendue dans son état d'origine, avec sa boîte. Contactez-nous sur WhatsApp pour l'organiser.</p>`],
+      'guide-tailles': ['Guide des tailles', `
+        <p>Correspondances <b>indicatives</b> : la taille peut varier d'une marque et d'un modèle à l'autre. Pour mesurer votre pied, posez-le sur une feuille, tracez le talon et le bout du plus long orteil, puis mesurez en centimètres.</p>
+        <div class="size-table-wrap"><table class="size-table"><thead><tr><th>EU</th><th>Longueur du pied (cm)</th><th>UK</th><th>US homme</th><th>US femme</th></tr></thead>
+        <tbody>${SIZE_TABLE.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+        <p class="muted">Entre deux pointures ? Prenez la plus grande, ou demandez-nous conseil.</p>`]
+    };
+    const pg = pages[slug];
+    if (!pg) return viewNotFound();
+    return [`<section class="coll-head"><nav class="crumbs"><a href="#/">Accueil</a><span>›</span><span>Aide</span><span>›</span><span>${esc(pg[0])}</span></nav><h1 class="coll-h1">${esc(pg[0])}</h1></section>
+      <section class="section help">
+        <nav class="help-nav">${Object.entries(pages).map(([k, v]) => `<a href="#/aide/${k}" class="${k === slug ? 'on' : ''}">${esc(v[0])}</a>`).join('')}${wa ? `<a href="${wa}" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>` : ''}</nav>
+        <div class="help-body">${pg[1]}</div>
+      </section>`];
+  }
+
+  /* ---------- PAGE COLLECTION (catalogue, univers, style, marque) ---------- */
+  const COLOR_WORDS = new Set(['noir', 'noire', 'blanc', 'blanche', 'gris', 'grise', 'rouge', 'bleu', 'bleue', 'marine', 'vert', 'verte', 'rose', 'beige', 'argent', 'crème', 'creme', 'kaki', 'marron', 'camel', 'violet', 'olive', 'orange', 'jaune', 'taupe', 'blé', 'lime', 'volt', 'ciel', 'menthe', 'réfléchissant', 'strass', 'canard', 'lavande', 'moutarde', 'brodée', 'verni', 'multicolore', 'denim', '/', '&', '+', '(coloris', 'variés)', 'triple', 'blanc/rouge', 'semelle', 'premium']);
+  function family(p) {
+    const w = String(p.model).split(/\s+/);
+    while (w.length > 1 && COLOR_WORDS.has(w[w.length - 1].toLowerCase())) w.pop();
+    return w.join(' ');
+  }
+  const PER_PAGE = 24;
+
+  function viewCatalogue(_, params, brandId) {
+    const brand = brandId ? brandById(brandId) : null;
     const st = {
       genre: (params.get('genre') || '').split(',').filter(Boolean),
       type: (params.get('type') || '').split(',').filter(Boolean),
       marque: (params.get('marque') || '').split(',').filter(Boolean),
       taille: (params.get('taille') || '').split(',').filter(Boolean).map(Number),
+      serie: params.get('serie') || '',
+      couleur: (params.get('couleur') || '').split(',').filter(Boolean),
       q: params.get('q') || '',
       tri: params.get('tri') || 'pertinence',
       max: +params.get('max') || 0,
-      promo: params.get('promo') === '1'
+      promo: params.get('promo') === '1',
+      page: Math.max(1, +params.get('page') || 1)
     };
-    const all = products();
+    const all = brand ? products().filter(p => p.brandId === brand.id) : products();
     const maxPrice = Math.max(10000, ...all.map(p => p.price));
     const allSizes = [...new Set(all.flatMap(p => p.sizes || []))].sort((a, b) => a - b);
     if (!st.max) st.max = maxPrice;
 
-    let title = 'Catalogue';
+    let title = 'Toutes les sneakers';
+    if (st.promo) title = 'Promotions';
+    else if (st.tri === 'recent' && !st.genre.length && !st.type.length) title = 'Nouveautés';
     if (st.genre.length === 1 && !st.type.length) title = GENDERS[st.genre[0]] || title;
     if (st.type.length === 1 && !st.genre.length) title = TYPES[st.type[0]] || title;
     if (st.genre.length === 1 && st.type.length === 1) title = `${TYPES[st.type[0]]} ${GENDERS[st.genre[0]]}`;
+    if (brand) title = brand.name;
 
-    const chip = (group, val, label) => `<button class="chip" data-f="${group}" data-v="${val}">${label}</button>`;
+    /* Rangée de sous-collections */
+    let subs = '';
+    if (brand) {
+      const fams = [];
+      all.forEach(p => {
+        const f = family(p);
+        let e = fams.find(x => x.name === f);
+        if (!e) { e = { name: f, n: 0, p }; fams.push(e); }
+        e.n++;
+      });
+      if (fams.length > 1) subs = fams.map(f => `<button class="subcat" data-serie="${esc(f.name)}"><span class="subcat-img"><img src="${mainImg(f.p)}" alt="" loading="lazy"></span><span class="subcat-name">${esc(f.name)}</span></button>`).join('');
+    } else {
+      subs = C.brands.filter(b => all.some(p => p.brandId === b.id) && b.id !== 'autres')
+        .map(b => `<a class="subcat" href="#/marque/${b.id}">${brandLogo(b, 'subcat-logo')}<span class="subcat-name">${esc(b.name)}</span></a>`).join('');
+    }
+
+    const chip = (group, val, label) => `<button class="chip" data-f="${group}" data-v="${esc(val)}">${esc(label)}</button>`;
+    const crumbs = brand
+      ? `<a href="#/">Accueil</a><span>›</span><a href="#/marques">Marques</a><span>›</span><span>${esc(brand.name)}</span>`
+      : `<a href="#/">Accueil</a><span>›</span><a href="#/catalogue">Sneakers</a>${title !== 'Toutes les sneakers' ? `<span>›</span><span>${esc(title)}</span>` : ''}`;
+    /* Tuile éditoriale glissée dans la grille */
+    const edCand = brand
+      ? C.brands.filter(x => x.id !== brand.id && x.id !== 'autres' && products().some(p => p.brandId === x.id && p.featured && isPhoto(p)))
+      : C.brands.filter(x => x.id !== 'autres' && products().some(p => p.brandId === x.id && p.featured && isPhoto(p)));
+    const edB = edCand.length ? edCand[(all.length + (brand ? brand.id.length : 0)) % edCand.length] : null;
+    const edP = edB ? products().find(p => p.brandId === edB.id && p.featured && isPhoto(p)) : null;
+    const edito = edB && edP ? `<a class="edito-tile" href="#/marque/${edB.id}"><img src="${mainImg(edP)}" alt="" loading="lazy"><span><small>À découvrir aussi</small><b>${esc(edB.name)}</b><em class="h-btn">Découvrir</em></span></a>` : '';
+    /* « Dans une autre couleur » */
+    const colorsAvail = COLOR_FAMILIES.map(c => [c, all.filter(p => colorKeys(p).includes(c[0]) && isPhoto(p))]).filter(x => x[1].length);
+    const collName = brand ? brand.name : title;
+    const others = brand
+      ? C.brands.filter(b => b.id !== brand.id && b.id !== 'autres' && products().some(p => p.brandId === b.id))
+      : [];
 
     const html = `
-    <section class="page-head">
-      <div class="page-head-inner">
-        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><span>Catalogue</span></nav>
-        <h1 class="page-title" id="catTitle">${esc(title)}</h1>
-        <p class="muted" id="catCount"></p>
-      </div>
+    <section class="coll-head">
+      <nav class="crumbs">${crumbs}</nav>
+      <div class="coll-title">${brand && brand.logo ? brandLogo(brand, 'coll-logo') : ''}<h1 class="coll-h1">${esc(title)}</h1></div>
+      ${brand && brand.description ? `<p class="coll-desc">${esc(brand.description)}</p>` : ''}
+      ${subs ? `<div class="subcats" id="subcats">${subs}</div>` : ''}
     </section>
-    <section class="catalog">
-      <aside class="filters" id="filters">
-        <div class="filters-head"><b>Filtres</b><button class="link-btn" id="fReset">Tout effacer</button><button class="icon-btn filters-close" id="fClose" aria-label="Fermer">✕</button></div>
+    <section class="coll">
+      <div class="coll-bar">
+        <span class="coll-count" id="catCount"></span>
+        <div class="coll-actions">
+          <button class="coll-btn" id="fOpen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Afficher les filtres<em id="fN"></em></button>
+          <a class="coll-guide" href="#/aide/guide-tailles">Guide des tailles</a>
+          <label class="coll-sort"><span>Trier par</span>
+            <select id="fSort" aria-label="Trier par">
+              <option value="pertinence">Recommandés</option>
+              <option value="recent">Nouveautés</option>
+              <option value="prix-asc">Prix croissant</option>
+              <option value="prix-desc">Prix décroissant</option>
+              <option value="nom">Nom A → Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="active-filters" id="activeFilters"></div>
+      <div class="grid coll-grid" id="grid"></div>
+      <nav class="pager" id="pager" aria-label="Pages"></nav>
+    </section>
+
+    ${colorsAvail.length > 1 ? `<section class="section discover">
+      <h2 class="discover-title">${esc(collName)} dans une autre couleur</h2>
+      <div class="thumb-row">${colorsAvail.map(([c, l]) => `<button class="subcat" data-couleur="${c[0]}"><span class="subcat-img"><img src="${mainImg(l[0])}" alt="" loading="lazy"><i class="sw-dot" style="background:${c[2]}"></i></span><span class="subcat-name">${esc(c[1])}</span></button>`).join('')}</div>
+    </section>` : ''}
+
+    <section class="section discover coll-faq">
+      <h2 class="discover-title">${esc(collName)} : vos questions</h2>
+      ${faqHTML([
+        [`Comment commander ${brand ? 'une paire ' + brand.name : 'une paire'} ?`, 'Ajoutez la paire au panier avec votre pointure puis touchez « Commander via WhatsApp », ou écrivez-nous directement depuis la fiche du modèle.'],
+        ['Les pointures indiquées sont-elles disponibles ?', 'Les pointures affichées sont celles proposées pour le modèle. La disponibilité exacte vous est confirmée sur WhatsApp au moment de la commande.'],
+        ['Comment choisir la bonne taille ?', 'Consultez le guide des tailles. Entre deux pointures, prenez la plus grande ou demandez-nous conseil.']
+      ])}
+      <p class="muted small">D'autres questions ? <a href="#/aide/faq">Voir toute la FAQ</a></p>
+    </section>
+
+    ${others.length ? `<section class="section discover">
+      <h2 class="discover-title">Découvrez aussi</h2>
+      <div class="discover-row">${others.map(b => `<a class="subcat" href="#/marque/${b.id}">${brandLogo(b, 'subcat-logo')}<span class="subcat-name">${esc(b.name)}</span></a>`).join('')}</div>
+    </section>` : `<section class="section discover">
+      <h2 class="discover-title">Découvrez aussi</h2>
+      <div class="discover-links">${typesUsed().map(t => `<a href="#/catalogue?type=${t}">${TYPES[t]}</a>`).join('')}${Object.keys(GENDERS).map(g => `<a href="#/catalogue?genre=${g}">Sneakers ${GENDERS[g].toLowerCase()}</a>`).join('')}<a href="#/catalogue?tri=recent">Nouveautés</a><a href="#/marques">Toutes les marques</a></div>
+    </section>`}
+
+    <aside class="filters" id="filters" aria-label="Filtres">
+      <div class="filters-head"><b>Filtres</b><button class="icon-btn filters-close" id="fClose" aria-label="Fermer">✕</button></div>
+      <div class="filters-body">
+        <div class="search-inline">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="fQ" type="search" placeholder="Rechercher un modèle…" value="${esc(st.q)}">
+        </div>
         <div class="f-group"><h4>Univers</h4><div class="chips">${Object.entries(GENDERS).map(([k, v]) => chip('genre', k, v)).join('')}</div></div>
-        <div class="f-group"><h4>Style</h4><div class="chips">${typesUsed().map(k => chip('type', k, TYPES[k])).join('')}</div></div>
-        <div class="f-group"><h4>Marque</h4><div class="checks">${C.brands.map(b => {
+        <div class="f-group"><h4>Style</h4><div class="chips">${typesUsed().filter(t => all.some(p => p.type === t)).map(k => chip('type', k, TYPES[k])).join('')}</div></div>
+        ${brand ? '' : `<div class="f-group"><h4>Marque</h4><div class="checks">${C.brands.map(b => {
           const n = all.filter(p => p.brandId === b.id).length;
           return n ? `<label class="check"><input type="checkbox" data-f="marque" value="${b.id}"><span></span>${esc(b.name)}<em>${n}</em></label>` : '';
-        }).join('')}</div></div>
+        }).join('')}</div></div>`}
+        <div class="f-group"><h4>Couleur</h4><div class="chips swatch-chips">${COLOR_FAMILIES.filter(c => all.some(p => colorKeys(p).includes(c[0]))).map(c => `<button class="chip" data-f="couleur" data-v="${c[0]}"><i style="background:${c[2]}"></i>${c[1]}</button>`).join('')}</div></div>
+        <div class="f-group"><h4>Pointure <a class="f-guide" href="#/aide/guide-tailles">Guide des tailles</a></h4><div class="chips sizes">${allSizes.map(s => chip('taille', s, s)).join('')}</div></div>
         <div class="f-group"><h4>Prix max <output id="maxOut"></output></h4>
           <input type="range" id="fMax" min="0" max="${maxPrice}" step="1000" value="${st.max}">
         </div>
-        <div class="f-group"><h4>Pointure</h4><div class="chips sizes">${allSizes.map(s => chip('taille', s, s)).join('')}</div></div>
         <div class="f-group"><label class="check"><input type="checkbox" id="fPromo"><span></span>En promotion uniquement</label></div>
-      </aside>
-      <div class="catalog-main">
-        <div class="catalog-bar">
-          <div class="search-inline">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <input id="fQ" type="search" placeholder="Rechercher un modèle…" value="${esc(st.q)}">
-          </div>
-          <button class="btn btn-ghost filters-open" id="fOpen">Filtres</button>
-          <select id="fSort" aria-label="Trier">
-            <option value="pertinence">Pertinence</option>
-            <option value="recent">Nouveautés</option>
-            <option value="prix-asc">Prix croissant</option>
-            <option value="prix-desc">Prix décroissant</option>
-            <option value="nom">Nom A → Z</option>
-          </select>
-        </div>
-        <div class="active-filters" id="activeFilters"></div>
-        <div class="grid" id="grid"></div>
       </div>
-    </section>`;
+      <div class="filters-foot"><button class="btn btn-ghost" id="fReset">Tout effacer</button><button class="btn btn-primary" id="fApply">Voir les produits</button></div>
+    </aside>`;
 
     const mount = () => {
       const grid = $('#grid');
+      // Le panneau de filtres passe au premier plan (au-dessus du voile sombre)
+      const fPanel = $('#filters');
+      document.body.appendChild(fPanel);
+      disposers.push(() => fPanel.remove());
       $('#fSort').value = st.tri;
       $('#fPromo').checked = st.promo;
 
@@ -475,19 +799,27 @@
           b.classList.toggle('on', arr.includes(v));
         });
         $$('input[data-f="marque"]').forEach(i => { i.checked = st.marque.includes(i.value); });
+        $$('[data-serie]').forEach(b => b.classList.toggle('on', b.dataset.serie === st.serie));
         $('#maxOut').textContent = price(st.max);
         const tags = [
+          ...(st.serie ? [['serie', st.serie, st.serie]] : []),
           ...st.genre.map(v => ['genre', v, GENDERS[v]]),
           ...st.type.map(v => ['type', v, TYPES[v]]),
           ...st.marque.map(v => ['marque', v, (brandById(v) || {}).name || v]),
-          ...st.taille.map(v => ['taille', v, 'P. ' + v])
+          ...st.taille.map(v => ['taille', v, 'Pointure ' + v]),
+          ...st.couleur.map(v => ['couleur', v, (colorFam(v) || [v, v])[1]]),
+          ...(st.promo ? [['promo', '1', 'En promotion']] : [])
         ];
-        $('#activeFilters').innerHTML = tags.map(t => `<button class="tag" data-rm="${t[0]}" data-v="${t[1]}">${esc(t[2])} ✕</button>`).join('');
+        $('#activeFilters').innerHTML = tags.map(t => `<button class="tag" data-rm="${t[0]}" data-v="${esc(t[1])}">${esc(t[2])} ✕</button>`).join('');
+        const n = st.genre.length + st.type.length + st.marque.length + st.taille.length + st.couleur.length + (st.promo ? 1 : 0) + (st.q ? 1 : 0) + (st.max < maxPrice ? 1 : 0);
+        $('#fN').textContent = n ? n : '';
       };
 
       const filtered = () => {
         const q = st.q.trim().toLowerCase();
-        let list = all.filter(p =>
+        const list = all.filter(p =>
+          (!st.serie || family(p) === st.serie) &&
+          (!st.couleur.length || st.couleur.some(c => colorKeys(p).includes(c))) &&
           (!st.genre.length || st.genre.some(g => p.gender.includes(g))) &&
           (!st.type.length || st.type.includes(p.type)) &&
           (!st.marque.length || st.marque.includes(p.brandId)) &&
@@ -508,30 +840,50 @@
 
       const writeURL = () => {
         const q = new URLSearchParams();
-        ['genre', 'type', 'marque', 'taille'].forEach(k => st[k].length && q.set(k, st[k].join(',')));
+        ['genre', 'type', 'marque', 'taille', 'couleur'].forEach(k => st[k].length && q.set(k, st[k].join(',')));
+        if (st.serie) q.set('serie', st.serie);
         if (st.q) q.set('q', st.q);
         if (st.tri !== 'pertinence') q.set('tri', st.tri);
         if (st.max < maxPrice) q.set('max', st.max);
         if (st.promo) q.set('promo', '1');
+        if (st.page > 1) q.set('page', st.page);
         const qs = q.toString();
-        history.replaceState(null, '', '#/catalogue' + (qs ? '?' + qs : ''));
+        history.replaceState(null, '', (brand ? '#/marque/' + brand.id : '#/catalogue') + (qs ? '?' + qs : ''));
+      };
+
+      const pagerHTML = (page, pages) => {
+        if (pages <= 1) return '';
+        const nums = [];
+        for (let i = 1; i <= pages; i++) {
+          if (i === 1 || i === pages || Math.abs(i - page) <= 1) nums.push(i);
+          else if (nums[nums.length - 1] !== '…') nums.push('…');
+        }
+        return `<button class="pg" data-pg="${page - 1}" ${page === 1 ? 'disabled' : ''} aria-label="Page précédente">‹</button>` +
+          nums.map(n => n === '…' ? '<span class="pg-gap">…</span>' : `<button class="pg ${n === page ? 'on' : ''}" data-pg="${n}">${n}</button>`).join('') +
+          `<button class="pg" data-pg="${page + 1}" ${page === pages ? 'disabled' : ''} aria-label="Page suivante">›</button>`;
       };
 
       let first = true;
-      const render = async () => {
+      const render = async (opts = {}) => {
         syncUI();
         const list = filtered();
-        $('#catCount').textContent = `${list.length} modèle${list.length > 1 ? 's' : ''}`;
-        if (!first && !reduced) {
-          grid.classList.add('fading');
-          await wait(220);
-        }
-        grid.innerHTML = list.length ? list.map(card).join('') : emptyState('Aucune chaussure ne correspond à ces filtres.');
+        const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+        st.page = Math.min(st.page, pages);
+        $('#catCount').textContent = `${list.length} produit${list.length > 1 ? 's' : ''}`;
+        $('#fApply').textContent = `Voir les ${list.length} produit${list.length > 1 ? 's' : ''}`;
+        if (!first && !reduced) { grid.classList.add('fading'); await wait(200); }
+        const slice = list.slice((st.page - 1) * PER_PAGE, st.page * PER_PAGE);
+        let cards = slice.map(card);
+        if (slice.length >= 8 && edito) cards.splice(6, 0, edito);
+        grid.innerHTML = slice.length ? cards.join('') : emptyState('Aucune chaussure ne correspond à ces filtres.');
+        $('#pager').innerHTML = pagerHTML(st.page, pages);
         grid.classList.remove('fading');
-        reveal(grid); tilt(grid);
+        reveal(grid);
         if (!first) writeURL();
+        if (opts.scroll) window.scrollTo({ top: $('.coll').getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' });
         first = false;
       };
+      const change = () => { st.page = 1; render(); };
 
       $('#filters').addEventListener('click', e => {
         const b = e.target.closest('.chip[data-f]');
@@ -539,22 +891,31 @@
         const k = b.dataset.f, v = k === 'taille' ? +b.dataset.v : b.dataset.v;
         const arr = st[k], i = arr.indexOf(v);
         i >= 0 ? arr.splice(i, 1) : arr.push(v);
-        render();
+        change();
       });
       $('#filters').addEventListener('change', e => {
-        if (e.target.matches('input[data-f="marque"]')) {
-          st.marque = $$('input[data-f="marque"]:checked').map(i => i.value);
-          render();
-        }
-        if (e.target.id === 'fPromo') { st.promo = e.target.checked; render(); }
+        if (e.target.matches('input[data-f="marque"]')) { st.marque = $$('input[data-f="marque"]:checked').map(i => i.value); change(); }
+        if (e.target.id === 'fPromo') { st.promo = e.target.checked; change(); }
       });
+      $$('[data-couleur]').forEach(b => b.addEventListener('click', () => {
+        st.couleur = [b.dataset.couleur]; change();
+        window.scrollTo({ top: $('.coll').getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' });
+      }));
+      const subcats = $('#subcats');
+      subcats && subcats.addEventListener('click', e => {
+        const b = e.target.closest('[data-serie]');
+        if (!b) return;
+        st.serie = st.serie === b.dataset.serie ? '' : b.dataset.serie;
+        change();
+      });
+      dragScroll && subcats && dragScroll(subcats);
       let rt;
-      $('#fMax').addEventListener('input', e => { st.max = +e.target.value; $('#maxOut').textContent = price(st.max); clearTimeout(rt); rt = setTimeout(render, 250); });
-      $('#fSort').addEventListener('change', e => { st.tri = e.target.value; render(); });
+      $('#fMax').addEventListener('input', e => { st.max = +e.target.value; $('#maxOut').textContent = price(st.max); clearTimeout(rt); rt = setTimeout(change, 250); });
+      $('#fSort').addEventListener('change', e => { st.tri = e.target.value; change(); });
       let qt;
-      $('#fQ').addEventListener('input', e => { st.q = e.target.value; clearTimeout(qt); qt = setTimeout(render, 280); });
+      $('#fQ').addEventListener('input', e => { st.q = e.target.value; clearTimeout(qt); qt = setTimeout(change, 280); });
       $('#fReset').addEventListener('click', () => {
-        Object.assign(st, { genre: [], type: [], marque: [], taille: [], q: '', max: maxPrice, promo: false });
+        Object.assign(st, { genre: [], type: [], marque: [], taille: [], couleur: [], serie: '', q: '', max: maxPrice, promo: false, page: 1 });
         $('#fQ').value = ''; $('#fMax').value = maxPrice; $('#fPromo').checked = false;
         render();
       });
@@ -562,12 +923,22 @@
         const t = e.target.closest('[data-rm]');
         if (!t) return;
         const k = t.dataset.rm, v = k === 'taille' ? +t.dataset.v : t.dataset.v;
-        st[k] = st[k].filter(x => x !== v);
-        render();
+        if (k === 'serie') st.serie = '';
+        else if (k === 'promo') { st.promo = false; $('#fPromo').checked = false; }
+        else st[k] = st[k].filter(x => x !== v);
+        change();
       });
+      $('#pager').addEventListener('click', e => {
+        const b = e.target.closest('[data-pg]');
+        if (!b || b.disabled) return;
+        st.page = +b.dataset.pg;
+        render({ scroll: true });
+      });
+      const closeF = () => document.body.classList.remove('filters-open');
       $('#fOpen').addEventListener('click', () => document.body.classList.add('filters-open'));
-      $('#fClose').addEventListener('click', () => document.body.classList.remove('filters-open'));
-      disposers.push(() => document.body.classList.remove('filters-open'));
+      $('#fClose').addEventListener('click', closeF);
+      $('#fApply').addEventListener('click', () => { closeF(); window.scrollTo({ top: $('.coll').getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' }); });
+      disposers.push(closeF);
       render();
     };
     return [html, mount];
@@ -606,37 +977,98 @@
     return [html];
   }
 
-  function viewBrand([id]) {
-    const b = brandById(id);
-    if (!b) return viewNotFound();
-    const list = products().filter(p => p.brandId === id);
-    const byType = Object.keys(TYPES).map(t => [t, list.filter(p => p.type === t)]).filter(x => x[1].length);
-    const html = `
-    <section class="page-head brand-hero" style="--bc:${esc(b.color || '#d4af5f')}">
-      <div class="page-head-inner">
-        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/marques">Marques</a><span>/</span><span>${esc(b.name)}</span></nav>
-        ${b.logo ? brandLogo(b, 'hero-logo') : ''}
-        <h1 class="page-title giant">${esc(b.name)}</h1>
-        <p class="muted">${esc(b.description || '')} — ${list.length} modèle${list.length > 1 ? 's' : ''}</p>
-        <div class="chips jump">${byType.map(([t, l]) => `<a class="chip" href="#bt-${t}" data-jump="bt-${t}">${TYPES[t]} <em>${l.length}</em></a>`).join('')}</div>
-      </div>
-    </section>
-    ${byType.length ? byType.map(([t, l]) => `
-      <section class="section" id="bt-${t}">
-        ${sectionHead(esc(b.name), TYPES[t])}
-        <div class="grid">${l.map(card).join('')}</div>
-      </section>`).join('') : `<section class="section">${emptyState('Aucun modèle pour cette marque pour le moment.')}</section>`}`;
-    const mount = () => {
-      $$('[data-jump]').forEach(a => a.addEventListener('click', e => {
-        e.preventDefault();
-        const t = document.getElementById(a.dataset.jump);
-        t && window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' });
-      }));
-    };
-    return [html, mount];
+  function viewBrand([id], params) {
+    if (!brandById(id)) return viewNotFound();
+    return viewCatalogue(null, params, id);
   }
 
   /* ---------- FICHE PRODUIT ---------- */
+  /* ---------- Visionneuse 360° ---------- */
+  function mountSpin(p) {
+    const frames = p.spin, n = frames.length;
+    const el = $('#spin360'), im = $('#spinImg'), range = $('#s360Range'), bar = $('#s360Load i');
+    let pos = 0, cur = 0, loaded = 0, raf = 0, glideRaf = 0, interacted = false;
+    const set = v => {
+      pos = v;
+      const i = ((Math.round(v) % n) + n) % n;
+      if (i !== cur) { cur = i; im.src = frames[i]; range.value = i; }
+    };
+    const stop = () => {
+      interacted = true;
+      cancelAnimationFrame(raf); cancelAnimationFrame(glideRaf);
+      const h = $('#s360Hint'); h && h.classList.add('gone');
+    };
+    const autoTurn = () => {
+      if (reduced || interacted) return;
+      let t0 = 0;
+      const dur = 2800;
+      const step = t => {
+        if (interacted) return;
+        if (!t0) t0 = t;
+        const k = Math.min(1, (t - t0) / dur);
+        const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        set(e * n);
+        if (k < 1) raf = requestAnimationFrame(step); else set(0);
+      };
+      raf = requestAnimationFrame(step);
+    };
+    // Préchargement de toutes les vues
+    frames.forEach(src => {
+      const o = new Image();
+      o.onload = o.onerror = () => {
+        loaded++;
+        bar.style.width = Math.round(loaded / n * 100) + '%';
+        if (loaded === n) el.classList.add('ready');
+      };
+      o.src = src;
+    });
+    // Glisser : une largeur de visionneuse = un tour complet
+    const ppf = () => Math.max(3, el.clientWidth / n);
+    let down = false, sx = 0, sp = 0, lastX = 0, lastT = 0, vel = 0;
+    el.addEventListener('pointerdown', e => {
+      if (e.target === range) return;
+      stop(); down = true; sx = lastX = e.clientX; sp = pos; lastT = performance.now(); vel = 0;
+      try { el.setPointerCapture(e.pointerId); } catch (err) { /* capture indisponible : sans effet */ }
+      el.classList.add('grabbing');
+    });
+    el.addEventListener('pointermove', e => {
+      if (!down) return;
+      const now = performance.now();
+      vel = (e.clientX - lastX) / Math.max(1, now - lastT);
+      lastX = e.clientX; lastT = now;
+      set(sp - (e.clientX - sx) / ppf());
+    });
+    const up = () => {
+      if (!down) return;
+      down = false; el.classList.remove('grabbing');
+      let v = vel * 16;
+      const glide = () => {
+        v *= 0.92;
+        if (Math.abs(v) < 0.4) { set(Math.round(pos)); return; }
+        set(pos - v / ppf());
+        glideRaf = requestAnimationFrame(glide);
+      };
+      glideRaf = requestAnimationFrame(glide);
+    };
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { stop(); set(cur + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { stop(); set(cur - 1); e.preventDefault(); }
+    });
+    range.addEventListener('input', () => { stop(); set(+range.value); });
+    // Onglets 360° / Photos
+    const tabs = $('#viewTabs');
+    tabs && tabs.addEventListener('click', e => {
+      const b = e.target.closest('[data-mode]');
+      if (!b) return;
+      const is360 = b.dataset.mode === '360';
+      $$('#viewTabs button').forEach(x => x.classList.toggle('on', x === b));
+      el.hidden = !is360;
+      $('#photoView').hidden = is360;
+    });
+    disposers.push(() => { cancelAnimationFrame(raf); cancelAnimationFrame(glideRaf); });
+  }
   function viewProduct([id]) {
     const p = productById(id);
     if (!p || p.active === false) return viewNotFound();
@@ -646,6 +1078,7 @@
     const PV = viewsOf(p);
     const start = Math.max(0, PV.findIndex(v => v.id === mainView(p)));
     const photo = isPhoto(p);
+    const hasSpin = has360(p);
     const related = products().filter(x => x.id !== p.id && (x.brandId === p.brandId || x.type === p.type))
       .sort((a, c) => (c.brandId === p.brandId) - (a.brandId === p.brandId)).slice(0, 4);
 
@@ -653,6 +1086,18 @@
     <section class="pdp">
       <nav class="crumbs pdp-crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/marque/${b.id}">${esc(b.name)}</a><span>/</span><span>${esc(p.model)}</span></nav>
       <div class="gallery" data-reveal>
+        ${hasSpin ? `<div class="view-tabs" id="viewTabs" role="tablist">
+          <button class="on" data-mode="360" role="tab">${ICONS.spin}360°</button>
+          <button data-mode="photos" role="tab">Photos</button>
+        </div>
+        <div class="spin360" id="spin360" tabindex="0" aria-label="Vue 360° : glissez ou utilisez les flèches pour faire tourner la chaussure">
+          <img id="spinImg" src="${esc(p.spin[0])}" alt="${esc(b.name + ' ' + p.model)} — vue 360°" draggable="false">
+          <span class="s360-badge">${ICONS.spin}360°</span>
+          <span class="s360-hint" id="s360Hint">${ICONS.drag}Glissez pour faire tourner</span>
+          <div class="s360-load" id="s360Load"><i></i></div>
+          <input type="range" class="s360-range" id="s360Range" min="0" max="${p.spin.length - 1}" value="0" step="1" aria-label="Rotation de la chaussure">
+        </div>` : ''}
+        <div id="photoView"${hasSpin ? ' hidden' : ''}>
         <div class="stage ${photo ? 'photo' : ''}" id="stage" tabindex="0" aria-label="Visionneuse : glissez ou utilisez les flèches pour changer de vue">
           <span class="stage-bg-word" aria-hidden="true">${esc(b.name || '')}</span>
           <img id="stageImg" src="${img(p, PV[start].id)}" alt="${esc(b.name + ' ' + p.model)} — vue ${PV[start].label}" draggable="false">
@@ -670,6 +1115,7 @@
           ${PV.map((v, i) => `<button class="thumb ${i === start ? 'active' : ''}" data-view="${i}">
             <img src="${img(p, v.id)}" alt="" loading="lazy"><span>${photo ? 'Photo ' + (i + 1) : v.label}</span></button>`).join('')}
         </div>` : ''}
+        </div>
       </div>
 
       <div class="pdp-info">
@@ -691,13 +1137,14 @@
         </div>` : ''}
 
         <div class="pdp-block" data-reveal style="--d:280ms">
-          <h4>Pointure <span class="muted">(EU)</span></h4>
+          <h4>Pointure <span class="muted">(EU)</span> <a class="pdp-guide" href="#/aide/guide-tailles">Guide des tailles</a></h4>
           <div class="size-grid" id="sizeGrid">${sizes.length ? sizes.map(s => `<button class="size" data-size="${s}">${s}</button>`).join('') : '<span class="muted">Pointures sur demande</span>'}</div>
         </div>
 
         <div class="pdp-actions" data-reveal style="--d:320ms">
           <div class="qty"><button id="qMinus" aria-label="Moins">−</button><span id="qVal">1</span><button id="qPlus" aria-label="Plus">+</button></div>
           <button class="btn btn-primary magnetic grow" id="addBtn" ${p.stock <= 0 ? 'disabled' : ''}>${p.stock <= 0 ? 'Épuisé' : 'Ajouter au panier'}</button>
+          ${favBtn(p, 'pdp-fav')}
         </div>
         <button class="btn btn-ghost btn-block" id="waBtn" data-reveal style="--d:360ms">Commander directement sur WhatsApp</button>
         <p class="stock ${p.stock <= 0 ? 'out' : p.stock <= 3 ? 'low' : ''}" data-reveal style="--d:380ms">
@@ -718,6 +1165,7 @@
     </section>` : ''}`;
 
     const mount = () => {
+      if (hasSpin) mountSpin(p);
       const stage = $('#stage'), imgEl = $('#stageImg');
       let idx = start, token = 0, spin = null, qty = 1, size = null, color = p.colors && p.colors[0] ? p.colors[0].name : '';
 
@@ -836,7 +1284,8 @@
     [/^\/catalogue$/, viewCatalogue],
     [/^\/marques$/, viewBrands],
     [/^\/marque\/([^/]+)$/, viewBrand],
-    [/^\/produit\/([^/]+)$/, viewProduct]
+    [/^\/produit\/([^/]+)$/, viewProduct],
+    [/^\/aide\/([^/]+)$/, viewHelp]
   ];
 
   function parseHash() {
@@ -868,6 +1317,7 @@
     app.classList.remove('page-leave');
     if (!opts.soft) { app.classList.remove('page-enter'); void app.offsetWidth; app.classList.add('page-enter'); }
     mount && mount();
+    tickCountdowns();
     reveal(app); tilt(app); magnetic(app);
     setActiveNav(path, params);
     firstRoute = false;
@@ -880,7 +1330,7 @@
     if (path.startsWith('/marque')) key = 'marques';
     else if (path === '/catalogue') {
       const g = params.get('genre');
-      key = g && !g.includes(',') ? g : 'catalogue';
+      key = params.get('promo') === '1' ? 'promos' : params.get('tri') === 'recent' && !g ? 'nouveautes' : g && !g.includes(',') ? g : 'catalogue';
     } else if (path !== '/') key = '';
     $$('[data-nav]').forEach(a => a.classList.toggle('active', a.dataset.nav === key));
   }
@@ -891,14 +1341,29 @@
   function renderChrome() {
     const s = C.settings;
     document.title = `${s.shopName} — Chaussures homme & femme`;
-    const ann = esc(s.announcement || s.tagline || '');
-    $('#announce').innerHTML = Array(6).fill(`<span>${ann}</span><i>✦</i>`).join('');
+    const msgs = String(s.announcement || s.tagline || '').split(/\s*[•|]\s*/).filter(Boolean);
+    const promoOn = s.promoText && countdownTarget(s.promoEnd) && countdownTarget(s.promoEnd) > Date.now();
+    $('#announce').innerHTML = `<div class="ann-inner">${promoOn ? `<span class="ann-promo">${esc(s.promoText)} <b data-countdown="${esc(s.promoEnd || 'weekly')}">--</b></span><a class="ann-cta" href="#/catalogue?promo=1">Voir les offres →</a>` : `<span>${esc(msgs[0] || '')}</span>`}</div>`;
+    $('#ann2').innerHTML = msgs.length ? `<div class="ann2-dots">${msgs.map((_, i) => `<i class="${i === 0 ? 'on' : ''}"></i>`).join('')}</div><span class="ann-rot" id="annRot">${esc(msgs[0])}</span>` : '';
+    clearInterval(renderChrome._rot);
+    if (msgs.length > 1) { let k = 0; renderChrome._rot = setInterval(() => { const el = $('#annRot'); if (!el) return; el.classList.add('out'); setTimeout(() => { k = (k + 1) % msgs.length; el.textContent = msgs[k]; el.classList.remove('out'); $$('.ann2-dots i').forEach((d, i) => d.classList.toggle('on', i === k)); }, 350); }, 4000); }
+    // Menus déroulants Homme / Femme
+    ['homme', 'femme'].forEach(g => {
+      const box = $('#mega' + (g === 'homme' ? 'Homme' : 'Femme')); if (!box) return;
+      const list = products().filter(p => p.gender.includes(g) && isPhoto(p));
+      const types = typesUsed().filter(t => list.some(p => p.type === t));
+      const brs = C.brands.filter(b => b.id !== 'autres' && list.some(p => p.brandId === b.id)).slice(0, 12);
+      box.innerHTML = `<div class="mg-types">${types.map(t => { const rep = list.find(p => p.type === t && p.featured) || list.find(p => p.type === t); return `<a href="#/catalogue?genre=${g}&type=${t}"><img src="${mainImg(rep)}" alt="" loading="lazy"><span>${TYPES[t]}</span></a>`; }).join('')}</div>
+        <div class="mg-brands"><b>Marques</b>${brs.map(b => `<a href="#/marque/${b.id}">${esc(b.name)}</a>`).join('')}<a class="all" href="#/catalogue?genre=${g}">Tout voir →</a></div>`;
+    });
+    renderMobileMenu(renderMobileMenu._g || 'homme');
     const brandsWith = C.brands.filter(b => products().some(p => p.brandId === b.id));
     $('#megaBrands').innerHTML = brandsWith.map(b => `<a href="#/marque/${b.id}" style="--bc:${esc(b.color || '#d4af5f')}">${b.logo ? brandLogo(b, 'mega-logo') : '<i></i>'}${esc(b.name)}</a>`).join('') + `<a href="#/marques" class="all">Toutes les marques →</a>`;
     const wa = s.whatsapp ? 'https://wa.me/' + String(s.whatsapp).replace(/[^\d]/g, '') : '';
     const socials = [['WhatsApp', wa, 'whatsapp'], ['TikTok', s.tiktok, 'tiktok'], ['Snapchat', s.snapchat, 'snapchat'], ['Instagram', s.instagram, 'instagram'], ['Facebook', s.facebook, 'facebook']].filter(x => x[1]);
     const socialRow = socials.length ? `<div class="social-row">${socials.map(x => `<a class="social-ic ${x[2]}" href="${esc(x[1])}" target="_blank" rel="noopener" aria-label="${x[0]}" title="${x[0]}">${ICONS[x[2]]}</a>`).join('')}</div>` : '';
     $('#footer').innerHTML = `
+      <div class="ft-trust">${TRUST.map(x => `<div>${ICONS[x[0]]}<span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span></div>`).join('')}</div>
       ${wa ? `<div class="ft-cta">
         <div class="ft-cta-text">
           <span class="ft-cta-kicker">Une paire vous plaît ?</span>
@@ -919,7 +1384,8 @@
         <nav class="ft-col" aria-label="Boutique"><h4>Boutique</h4>
           <a href="#/">Accueil</a><a href="#/catalogue?genre=homme">Homme</a><a href="#/catalogue?genre=femme">Femme</a><a href="#/marques">Marques</a><a href="#/catalogue?promo=1">Promotions</a>
         </nav>
-        <nav class="ft-col" aria-label="Styles"><h4>Styles</h4>${typesUsed().map(k => `<a href="#/catalogue?type=${k}">${TYPES[k]}</a>`).join('')}</nav>
+        <nav class="ft-col" aria-label="Aide"><h4>Aide</h4><a href="#/aide/faq">Questions fréquentes</a><a href="#/aide/livraison">Livraison & retours</a><a href="#/aide/guide-tailles">Guide des tailles</a>${wa ? `<a href="${esc(wa)}" target="_blank" rel="noopener">Nous contacter</a>` : ''}</nav>
+        <nav class="ft-col" aria-label="Styles"><h4>Styles</h4>${typesUsed().map(k => `<a href="#/catalogue?type=${k}">${TYPES[k]}</a>`).join('')}<a href="#/catalogue?tri=recent">Nouveautés</a></nav>
         <div class="ft-col"><h4>Contact</h4>
           ${s.phone ? `<a class="ft-line" href="tel:${esc(s.phone.replace(/\s/g, ''))}">${ICONS.phone}<span>${esc(s.phone)}</span></a>` : ''}
           ${s.address ? `<p class="ft-line">${esc(s.address)}</p>` : ''}
@@ -927,7 +1393,23 @@
           <p class="ft-note">Paiement à la livraison · Échange sous 7 jours</p>
         </div>
       </div>
-      <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(s.shopName)} · Tous droits réservés</span><a href="admin.html">Espace propriétaire</a></div>`;
+      <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(s.shopName)} · Tous droits réservés</span><span class="ft-pay">${ICONS.cash} Paiement à la livraison · ${ICONS.whatsapp} Commande WhatsApp</span><a href="admin.html">Espace propriétaire</a></div>`;
+  }
+
+  /* ---------- Menu mobile (onglets Homme / Femme) ---------- */
+  function renderMobileMenu(g) {
+    renderMobileMenu._g = g;
+    const body = $('#mmBody'); if (!body) return;
+    const list = products().filter(p => p.gender.includes(g) && isPhoto(p));
+    const types = typesUsed().filter(t => list.some(p => p.type === t));
+    const brands = C.brands.filter(b => b.id !== 'autres' && list.some(p => p.brandId === b.id));
+    $$('[data-mm]').forEach(b => b.classList.toggle('on', b.dataset.mm === g));
+    body.innerHTML = `
+      <a class="mm-all" href="#/catalogue?genre=${g}">Toutes les sneakers ${GENDERS[g].toLowerCase()} <span>→</span></a>
+      <div class="mm-grid">${types.map(t => { const rep = list.find(p => p.type === t && p.featured) || list.find(p => p.type === t); return `<a href="#/catalogue?genre=${g}&type=${t}"><img src="${mainImg(rep)}" alt="" loading="lazy"><span>${TYPES[t]}</span></a>`; }).join('')}</div>
+      <h4>Marques</h4>
+      <div class="mm-brands">${brands.map(b => `<a href="#/marque/${b.id}">${brandLogo(b, 'mm-logo')}<span>${esc(b.name)}</span></a>`).join('')}</div>
+      <nav class="mm-links"><a href="#/catalogue?tri=recent">Nouveautés</a><a href="#/catalogue?promo=1" class="red">Promotions</a><a href="#/marques">Toutes les marques</a><a href="#/aide/faq">Aide & FAQ</a><a href="#/aide/guide-tailles">Guide des tailles</a></nav>`;
   }
 
   function openSearch() {
@@ -977,24 +1459,48 @@
       h.classList.toggle('hide', y > 300 && y > last && !document.body.classList.contains('menu-open'));
       last = y;
     }, { passive: true });
-    $('#burger').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+    $('#burger').addEventListener('click', () => document.body.classList.add('mm-open'));
+    $('#mmClose').addEventListener('click', () => document.body.classList.remove('mm-open'));
+    $('#mobileMenu').addEventListener('click', e => {
+      const tab = e.target.closest('[data-mm]'); if (tab) return renderMobileMenu(tab.dataset.mm);
+      if (e.target.closest('a')) document.body.classList.remove('mm-open');
+    });
     $('#mainNav').addEventListener('click', e => { if (e.target.closest('a')) document.body.classList.remove('menu-open'); });
   }
 
   function bindGlobal() {
-    $('#cartBtn').addEventListener('click', openCart);
+    $('#cartBtn').addEventListener('click', () => openCart('cart'));
+    $('#favBtn').addEventListener('click', () => openCart('fav'));
     $('#cartClose').addEventListener('click', closeCart);
-    $('#backdrop').addEventListener('click', () => { closeCart(); document.body.classList.remove('filters-open'); });
+    $('.drawer-tabs').addEventListener('click', e => { const b = e.target.closest('[data-dtab]'); if (b) setDrawerTab(b.dataset.dtab); });
+    $('#backdrop').addEventListener('click', () => { closeCart(); document.body.classList.remove('filters-open', 'mm-open'); });
     $('#searchBtn').addEventListener('click', openSearch);
+    $('#hSearch').addEventListener('click', openSearch);
     $('#searchClose').addEventListener('click', closeSearch);
     $('#searchInput').addEventListener('input', e => renderSearch(e.target.value));
     $('#searchInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') { const q = e.target.value.trim(); closeSearch(); location.hash = '#/catalogue' + (q ? '?q=' + encodeURIComponent(q) : ''); }
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSearch(); closeCart(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSearch(); closeCart(); document.body.classList.remove('mm-open'); } });
 
     document.addEventListener('click', e => {
       if (e.target.closest('[data-close-cart]')) closeCart();
+
+      // Favoris
+      const fv = e.target.closest('[data-fav]');
+      if (fv) {
+        e.preventDefault(); e.stopPropagation();
+        const p = productById(fv.dataset.fav); if (!p) return;
+        const on = Fav.toggle(p.id);
+        renderFav();
+        if (fv.classList.contains('fav-btn')) { fv.classList.remove('pop'); void fv.offsetWidth; fv.classList.add('pop'); }
+        const fb = $('#favBtn'); fb.classList.remove('bump'); void fb.offsetWidth; fb.classList.add('bump');
+        toast(on ? `${p.model} ajouté aux favoris` : `${p.model} retiré des favoris`);
+        return;
+      }
+      // Flèches des carrousels
+      const ca = e.target.closest('[data-car]');
+      if (ca) { const tr = document.getElementById(ca.dataset.car); tr && tr.scrollBy({ left: +ca.dataset.dir * tr.clientWidth * 0.85, behavior: 'smooth' }); return; }
 
       const cq = e.target.closest('[data-cq]');
       if (cq) { const i = +cq.dataset.cq; Cart.setQty(i, Cart.items[i].qty + +cq.dataset.d); }
@@ -1040,8 +1546,12 @@
   async function boot() {
     C = await Store.load();
     Cart.load();
+    Fav.load();
     renderChrome();
     renderCart();
+    renderFav();
+    tickCountdowns();
+    setInterval(tickCountdowns, 1000);
     initHeader();
     bindGlobal();
     window.addEventListener('hashchange', () => router());
@@ -1053,8 +1563,9 @@
     const refresh = async () => {
       C = await Store.load();
       seen = C.updatedAt || 0;
-      renderChrome(); renderCart();
+      renderChrome(); renderCart(); renderFav();
       await router({ soft: true });
+      tickCountdowns();
       toast('Catalogue mis à jour');
     };
     Store.onChange(refresh);

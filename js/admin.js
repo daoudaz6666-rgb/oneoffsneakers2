@@ -355,6 +355,15 @@
           <div class="photo-grid" id="photoGrid"></div>
           <label class="bulk"><input type="file" accept="image/*" multiple id="bulkInput" hidden><span>⇪ Importer plusieurs photos d'un coup</span><small class="muted">dans l'ordre : face, profil, dessus, arrière, semelle</small></label>
         </section>
+        <section class="ed-section">
+          <h3>Vue 360° <span class="muted">— facultatif</span></h3>
+          <p class="muted small">Faites le tour de la chaussure en prenant 12 à 36 photos (même distance, même lumière, fond uni). Importez-les toutes d'un coup : elles sont rangées dans l'ordre de leur nom de fichier.</p>
+          <div id="spinAdmin" class="spin-admin"></div>
+          <div class="spin-actions">
+            <label class="bulk"><input type="file" accept="image/*" multiple id="spinInput" hidden><span>⟳ Importer les photos 360°</span><small class="muted">sélectionnez toutes les photos de la série</small></label>
+            <button type="button" class="btn btn-ghost sm danger-text" id="spinClear" hidden>Supprimer la vue 360°</button>
+          </div>
+        </section>
 
         <section class="ed-section">
           <h3>Informations</h3>
@@ -452,6 +461,34 @@
       if (files.length) toast(`${files.length} photo(s) importée(s)`);
       e.target.value = '';
     });
+
+    /* Vue 360° */
+    d.spin = Array.isArray(d.spin) ? d.spin.slice() : [];
+    const renderSpin = () => {
+      const box = $('#spinAdmin');
+      $('#spinClear').hidden = !d.spin.length;
+      if (!d.spin.length) { box.innerHTML = '<p class="muted small">Aucune vue 360° pour ce modèle.</p>'; return; }
+      box.innerHTML = `<div class="spin-prev"><img id="spinPrevImg" src="${d.spin[0]}" alt=""><span class="spin-count">${d.spin.length} photos${d.spin.length < 6 ? ' — il en faut au moins 6' : ''}</span></div>
+        <input type="range" id="spinPrevRange" min="0" max="${d.spin.length - 1}" value="0" aria-label="Aperçu de la rotation">`;
+      $('#spinPrevRange').addEventListener('input', e => { $('#spinPrevImg').src = d.spin[+e.target.value]; });
+    };
+    renderSpin();
+    $('#spinInput').addEventListener('change', async e => {
+      const files = [...e.target.files].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+      e.target.value = '';
+      if (!files.length) return;
+      if (files.length < 6) toast('Importez au moins 6 photos pour une vue 360° (idéalement 24 à 36).', 'warn');
+      $('#spinAdmin').innerHTML = '<p class="muted small" id="spinProg">Préparation des photos…</p>';
+      const out = [];
+      for (let i = 0; i < files.length; i++) {
+        try { out.push(await compressImage(files[i], 1000)); } catch (err) { /* fichier ignoré */ }
+        const pr = $('#spinProg'); if (pr) pr.textContent = `Préparation des photos… ${i + 1} / ${files.length}`;
+      }
+      d.spin = out;
+      renderSpin();
+      toast(`${out.length} photos 360° prêtes — cliquez sur Enregistrer`);
+    });
+    $('#spinClear').addEventListener('click', () => { d.spin = []; renderSpin(); });
 
     /* Style / univers */
     $('#typeSeg').addEventListener('click', e => {
@@ -658,6 +695,9 @@
             <label class="field"><span>Position de la devise</span><select name="currencyPosition"><option value="after">Après le prix (25 000 FCFA)</option><option value="before">Avant le prix (€ 25)</option></select></label>
           </div>
           ${f('announcement', 'Bandeau d\'annonce (haut du site)')}
+          <p class="muted small">Séparez plusieurs messages par « • » : ils défilent un par un.</p>
+          <div class="row2">${f('promoText', 'Texte du compte à rebours', 'Offres de la semaine : encore')}${f('promoEnd', 'Fin du compte à rebours', 'weekly, ou 2026-12-31 23:59')}</div>
+          <p class="muted small">« weekly » = jusqu'au lundi suivant (se renouvelle chaque semaine). Laissez le texte vide pour masquer le compte à rebours.</p>
         </section>
         <section class="box">
           <h3>Page d'accueil</h3>

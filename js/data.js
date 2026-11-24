@@ -248,6 +248,13 @@ window.DEFAULT_CATALOG = (function () {
 
   ];
 
+  /* Vues 360° : photos/360/<id du modèle>/01.jpg, 02.jpg… (nombre de vues par modèle) */
+  const SPIN360 = { 'adidas-campus-00s-vert': 24 };
+  products.forEach(p => {
+    const n = SPIN360[p.id];
+    if (n) p.spin = Array.from({ length: n }, (_, i) => `photos/360/${p.id}/${String(i + 1).padStart(2, '0')}.jpg`);
+  });
+
   return {
     version: 1,
     publishedAt: 0,
@@ -258,7 +265,9 @@ window.DEFAULT_CATALOG = (function () {
       currencyPosition: 'after',
       heroTitle: 'Marche à ta façon.',
       heroSubtitle: 'Baskets, sandales, mocassins et bottes pour homme et femme. Les plus grandes marques, sélectionnées une par une.',
-      announcement: 'Livraison rapide • Paiement à la livraison • Échange sous 7 jours',
+      announcement: 'Livraison rapide en 24–72 h • Paiement à la livraison • Échange sous 7 jours • Commande facile sur WhatsApp',
+      promoText: 'Offres de la semaine : encore',
+      promoEnd: 'weekly',
       whatsapp: '22665350291',
       phone: '+226 65 35 02 91',
       email: '',
